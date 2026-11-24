@@ -154,7 +154,7 @@ describe("pré-vol, humain et idempotence", () => {
       "fac-1120",
     );
     assert.equal(prepared.decision, "envoyer");
-    assert.ok(prepared.message?.includes(formatCfa(850_000)));
+    assert.ok(prepared.message?.includes(`régler exactement ${formatCfa(850_000)}`));
     assert.ok(prepared.message?.includes("FICTIF-MOMO-FAC-2026-1120"));
   });
 

@@ -34,12 +34,14 @@ export function draftMessage(
   step: ReminderStep,
 ): string {
   const reference = `FICTIF-MOMO-${invoice.number}`;
+  const due = formatCfa(balanceCfa);
   return [
     `Bonjour ${client.name},`,
     TONE[step.tone],
-    `Sauf erreur de notre part, la facture ${invoice.number} (${invoice.label}), échue le ${formatDate(invoice.dueOn)}, présente un solde de ${formatCfa(balanceCfa)}.`,
-    `Référence Mobile Money de démonstration, fictive, sans compte réel : ${reference}.`,
-    "Si le paiement est déjà parti ou si un point est à clarifier, répondez avant toute nouvelle relance.",
+    `La facture ${invoice.number} (${invoice.label}), échue le ${formatDate(invoice.dueOn)}, reste due pour ${due}.`,
+    `Merci de régler exactement ${due} et d'indiquer la référence ${reference}.`,
+    "Cette référence Mobile Money est une démonstration, fictive, sans compte réel.",
+    "Si ce montant est déjà parti ou si un point est à clarifier, répondez : la relance suivante attend une vérification.",
     "— Maison Adjovi & Fils, Cotonou",
   ].join("\n");
 }
