@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: deuxieme-regard
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_VERSION
+        value: "22"

@@ -44,6 +44,14 @@ Le carnet est enregistré dans le navigateur (`localStorage`, clé `deuxieme-reg
 
 Il n'y en a pas. L'application ne demande pas d'identité. Les téléphones du jeu sont tous `+229 01 00 00 00 00` et les courriels finissent par `@adjovi.example`.
 
+## Mettre en ligne
+
+Le même dépôt GitHub alimente les deux hébergeurs. Aucune variable secrète n'est nécessaire.
+
+1. Créez le dépôt GitHub depuis Cursor (pilule **Create repo**), ou poussez cette branche vers un dépôt vide, par exemple `bienvenuessegnon/deuxieme-regard`.
+2. Render : ouvrez `https://dashboard.render.com/blueprint/new?repo=` suivi de l'adresse HTTPS du dépôt, puis appliquez le fichier `render.yaml`. Le service écoute `0.0.0.0` et le port fourni par la plateforme. Le plan gratuit s'endort après un quart d'heure sans visite : le premier chargement du jury peut prendre une minute.
+3. Vercel : importez le même dépôt, framework Next.js, sans variable d'environnement. Désactivez la protection d'authentification du déploiement si le jury doit ouvrir l'adresse sans compte Vercel.
+
 ## Licences
 
 Le code original de ce dépôt est sous licence MIT (`LICENSE`).
