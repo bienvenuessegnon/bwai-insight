@@ -62,7 +62,7 @@ Il n'y en a pas. L'application ne demande pas d'identité. Les téléphones du j
 
 Le dépôt est [github.com/bienvenuessegnon/bwai-insight](https://github.com/bienvenuessegnon/bwai-insight). L'écran et les API (`/api/carnet`, `/api/factures`, `/api/verifier`) sont le même service Next.js.
 
-Render lit `render.yaml` : le service web `bwai-insight` et la base `bwai-insight-db`, à Francfort. `DATABASE_URL` vient de cette base au moment du déploiement. Elle n'est pas dans le dépôt. Le plan gratuit s'endort après un quart d'heure sans visite : le premier chargement peut prendre une minute. La base gratuite expire au bout de trente jours.
+Render lit `render.yaml` : le service web `bwai-insight`, à Francfort, sert l'écran et les API. L'adresse est [bwai-insight.onrender.com](https://bwai-insight.onrender.com). Le compte a déjà sa base gratuite sur un autre projet, donc ce service garde le registre des factures dans sa mémoire : il reste disponible tant que l'instance est réveillée. Le plan gratuit s'endort après un quart d'heure sans visite. Le premier chargement peut prendre une minute.
 
 Vercel : [importer le dépôt](https://vercel.com/new/import?s=https://github.com/bienvenuessegnon/bwai-insight&teamSlug=bienvenus-projects-7051ddc6), framework Next.js. Désactivez la protection d'authentification si le jury doit ouvrir l'adresse sans compte Vercel.
 

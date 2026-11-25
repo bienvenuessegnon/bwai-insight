@@ -1,6 +1,11 @@
+import pg from "pg";
 import { invoiceFingerprint } from "@/domain/billing/seal";
 import type { IssuedDocument } from "@/domain/billing/types";
-import { sql } from "@/lib/db";
+
+const databaseUrl = process.env.DATABASE_URL?.trim() ?? "";
+const memory: IssuedDocument[] = [];
+let pool: pg.Pool | undefined;
+let ready: Promise<void> | undefined;
 
 type Row = { sceau: string; number: string; fingerprint: string; payload: string };
 
@@ -15,8 +20,27 @@ function parseDocument(row: Row): IssuedDocument | null {
   }
 }
 
+async function database(): Promise<pg.Pool> {
+  pool ??= new pg.Pool({ connectionString: databaseUrl, max: 3 });
+  ready ??= pool
+    .query(
+      `create table if not exists issued_documents (
+        sceau text primary key,
+        number text not null unique,
+        fingerprint text not null,
+        payload text not null,
+        created_at timestamptz not null default now()
+      )`,
+    )
+    .then(() => undefined);
+  await ready;
+  return pool;
+}
+
 export async function listIssued(): Promise<IssuedDocument[]> {
-  const rows = await sql<Row>("select sceau, number, fingerprint, payload from issued_documents order by created_at");
+  if (databaseUrl === "") return [...memory];
+  const db = await database();
+  const rows = (await db.query<Row>("select sceau, number, fingerprint, payload from issued_documents order by created_at")).rows;
   return rows.flatMap((row) => {
     const document = parseDocument(row);
     return document ? [document] : [];
@@ -26,19 +50,23 @@ export async function listIssued(): Promise<IssuedDocument[]> {
 export async function findIssued(sceau: string): Promise<IssuedDocument | null> {
   const token = sceau.trim().slice(0, 80);
   if (!token) return null;
-  const rows = await sql<Row>(
-    "select sceau, number, fingerprint, payload from issued_documents where sceau = $1",
-    [token],
-  );
+  if (databaseUrl === "") return memory.find((item) => item.sceau === token) ?? null;
+  const db = await database();
+  const rows = (await db.query<Row>("select sceau, number, fingerprint, payload from issued_documents where sceau = $1", [token])).rows;
   return rows[0] ? parseDocument(rows[0]) : null;
 }
 
 export async function saveIssued(document: IssuedDocument): Promise<"ok" | "duplicate"> {
-  const fingerprint = invoiceFingerprint(document);
+  if (databaseUrl === "") {
+    if (memory.some((item) => item.sceau === document.sceau || item.number === document.number)) return "duplicate";
+    memory.push(document);
+    return "ok";
+  }
+  const db = await database();
   try {
-    await sql(
+    await db.query(
       "insert into issued_documents (sceau, number, fingerprint, payload) values ($1, $2, $3, $4)",
-      [document.sceau, document.number, fingerprint, JSON.stringify(document)],
+      [document.sceau, document.number, invoiceFingerprint(document), JSON.stringify(document)],
     );
     return "ok";
   } catch (error) {
