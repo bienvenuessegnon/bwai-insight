@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -125,6 +126,9 @@ export function Desk() {
             <p className="text-sm text-muted-foreground">{view.city}</p>
           </div>
           <nav className="flex flex-wrap gap-1 px-3 pb-3 lg:flex-col lg:flex-nowrap" aria-label="Sections">
+            <Link className="flex h-9 items-center rounded-md px-3 text-sm hover:bg-muted lg:w-full" href="/">
+              Facturer
+            </Link>
             {NAV.map((item) => {
             const count =
               item.id === "validation" ? view.aValider : item.id === "relances" ? view.letters.length : null;

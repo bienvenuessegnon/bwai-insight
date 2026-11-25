@@ -23,7 +23,19 @@ npm run build
 npm start
 ```
 
-## Ce qu'on montre
+## Facturer
+
+La page d'accueil met en forme une commande en facture. Quatre messages de démonstration couvrent une commande juste, un total annoncé faux, une livraison incomplète et un client absent du référentiel.
+
+1. Choisir un message, ou coller le sien, puis **Mettre en forme**.
+2. Lire les écarts. Confirmer les valeurs. **Valider et émettre**.
+3. **Télécharger**, **Partager** ou **Imprimer**. Le QR et le code ouvrent `/verifier`.
+
+Un second clic sur la même pièce ne crée pas un autre numéro. Un avoir n'altère pas la facture déjà émise. Les prix absents du message ne sont pas remplacés par le catalogue.
+
+Le recouvrement du cas 1 reste sur `/recouvrement`.
+
+## Recouvrement
 
 Date de référence figée : **24 novembre 2026**. Les mêmes pièces redonnent les mêmes soldes.
 

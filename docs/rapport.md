@@ -85,3 +85,9 @@ Passer à un usage réel ajouterait : hébergement d'une base (le fichier local 
 ## 9. Suite
 
 Brancher l'import sur le fichier que la PME exporte déjà, en gardant les mêmes refus. Remplacer la file simulée par un connecteur dont chaque appel reprend la même clé. Constituer un jeu de messages réels, annoté à part du code, avant de toucher au lexique. Laisser le grand livre seul juge des francs.
+
+## 10. Factures
+
+Le cas 2 occupe la page d'accueil. Un message commercial devient une feuille en un clic : client, lignes, remise, taxe de la maison à 18 %, total recalculé. Un champ absent reste vide. Un total annoncé qui ne tombe pas juste, une livraison incomplète, un prix hors catalogue ou un client inconnu bloquent l'émission jusqu'à une décision humaine.
+
+La validation donne un numéro unique, un sceau et un QR. Télécharger produit le PDF. Partager copie le lien de vérification. Imprimer n'emporte que la feuille. La page `/verifier` lit le QR ou le code collé. Un montant modifié refuse le sceau, sans base de données. Un avoir se lie à la facture et ne la réécrit pas. Le recouvrement reste sur `/recouvrement`.

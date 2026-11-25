@@ -9,9 +9,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Recouvrement — Maison Adjovi & Fils",
+  title: "Maison Adjovi & Fils",
   description:
-    "Encours, retards, relances et validations pour la quincaillerie Maison Adjovi & Fils, à Cotonou.",
+    "Factures mises en forme, vérifiées par sceau, et recouvrement des encours pour la quincaillerie Maison Adjovi & Fils, à Cotonou.",
 };
 
 export default function RootLayout({
