@@ -4,7 +4,7 @@ import { anomaliesOf, totalsOf, priceLines } from "./calc";
 import { CLEAN_ORDER, DELIVERY_ORDER, GAP_ORDER, UNKNOWN_ORDER } from "./catalog";
 import { parseOrder } from "./parse";
 import { createBillingState, reduceBilling } from "./reduce";
-import { readSeal } from "./seal";
+import { invoiceFingerprint } from "./seal";
 
 function readyClean() {
   let state = createBillingState();
@@ -65,9 +65,8 @@ describe("facturation", () => {
     assert.equal(JSON.stringify(credited.issued[0]), original);
     assert.equal(credited.issued[1].kind, "avoir");
     assert.equal(credited.issued[1].linkedNumber, credited.issued[0].number);
-    const seal = readSeal(issued.issued[0].sceau);
-    assert.equal(seal.ok, true);
-    const broken = readSeal(`${issued.issued[0].sceau.slice(0, -1)}a`);
-    assert.equal(broken.ok, false);
+    const changed = { ...issued.issued[0], clientName: "Autre client", lines: issued.issued[0].lines.map((line) => ({ ...line, qty: line.qty + 1 })) };
+    assert.notEqual(invoiceFingerprint(changed), invoiceFingerprint(issued.issued[0]));
+    assert.match(issued.issued[0].sceau, /^[A-Za-z0-9_-]{20,}$/);
   });
 });

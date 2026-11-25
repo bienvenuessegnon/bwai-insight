@@ -18,7 +18,7 @@ type Verdict = {
 
 export default function VerifierPage() {
   const [code, setCode] = useState("");
-  const [verdict, setVerdict] = useState<Verdict | null>(null);
+  const [verdict, setVerdict] = useState<(Verdict & { lines?: string[] }) | null>(null);
 
   async function check(sceau: string) {
     const response = await fetch(`/api/verifier?sceau=${encodeURIComponent(sceau)}`);
@@ -62,6 +62,7 @@ export default function VerifierPage() {
               <p className="mt-2">{verdict.kind} · {verdict.clientName}</p>
               <p className="text-xl">{verdict.totalLabel}</p>
               <p className="text-sm text-[#5c5346]">Émise le {verdict.issuedOnLabel}</p>
+              {verdict.lines && verdict.lines.length > 0 && <p className="mt-2 text-sm">{verdict.lines.join(" · ")}</p>}
             </>
           ) : (
             <>

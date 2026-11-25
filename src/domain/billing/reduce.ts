@@ -1,6 +1,6 @@
 import { anomaliesOf, priceLines, totalsOf } from "./calc";
 import { parseOrder } from "./parse";
-import { sealFacts } from "./seal";
+import { newSealToken } from "./seal";
 import { BILLING_DATE, BILLING_VERSION, DEFAULT_TAX_RATE, type BillingState, type Draft, type IssuedDocument } from "./types";
 
 export type BillingAction =
@@ -51,14 +51,8 @@ function note(state: BillingState, summary: string): BillingState {
 
 function issue(state: BillingState, document: Omit<IssuedDocument, "sceau" | "code" | "id">): BillingState {
   const id = `doc-${state.seq}`;
-  const sealed = sealFacts({
-    number: document.number,
-    issuedOn: document.issuedOn,
-    clientName: document.clientName,
-    totalTtc: document.totals.totalCfa,
-    kind: document.kind,
-  });
-  const issued: IssuedDocument = { ...document, id, ...sealed };
+  const sceau = newSealToken();
+  const issued: IssuedDocument = { ...document, id, sceau, code: sceau };
   const next = note(
     { ...state, issued: [...state.issued, issued] },
     document.kind === "avoir"
@@ -74,6 +68,7 @@ export function reduceBilling(state: BillingState, action: BillingAction): Billi
       return createBillingState();
     case "parse":
       if (typeof action.text !== "string" || !action.text.trim()) return state;
+      if (action.text.length > 4_000) return note(state, "Message trop long. Quatre mille caractères au plus.");
       return note(
         { ...state, draft: parseOrder(action.text, `draft-${state.seq}`, action.label) },
         `Message lu (${action.label}). Les champs absents restent vides.`,
@@ -139,7 +134,7 @@ function validate(state: BillingState): BillingState {
   if (!draft.confirmed || blocking.length > 0) {
     return note(state, "Validation refusée : une personne doit confirmer les valeurs, et les écarts doivent être tranchés.");
   }
-  const lines = priceLines(draft);
+  const lines = priceLines(draft).slice(0, 24);
   const totals = totalsOf(lines, draft.discountRate, state.taxRate);
   const number = `FAC-2026-${2000 + state.seq}`;
   const next = issue(state, {

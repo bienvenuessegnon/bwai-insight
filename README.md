@@ -31,7 +31,7 @@ La page d'accueil met en forme une commande en facture. Quatre messages de démo
 2. Lire les écarts. Confirmer les valeurs. **Valider et émettre**.
 3. **Télécharger**, **Partager** ou **Imprimer**. Le QR et le code ouvrent `/verifier`.
 
-Un second clic sur la même pièce ne crée pas un autre numéro. Un avoir n'altère pas la facture déjà émise. Les prix absents du message ne sont pas remplacés par le catalogue.
+Un second clic sur la même pièce ne crée pas un autre numéro. Un avoir n'altère pas la facture déjà émise. Les prix absents du message ne sont pas remplacés par le catalogue. Le code du QR est délivré par le registre du serveur : le PDF et la page de vérification relisent cette pièce, pas le fichier envoyé par le navigateur.
 
 Le recouvrement du cas 1 reste sur `/recouvrement`.
 
@@ -60,11 +60,11 @@ Il n'y en a pas. L'application ne demande pas d'identité. Les téléphones du j
 
 ## Mettre en ligne
 
-Le même dépôt GitHub alimente les deux hébergeurs. Aucune variable secrète n'est nécessaire.
+Le dépôt est [github.com/bienvenuessegnon/bwai-insight](https://github.com/bienvenuessegnon/bwai-insight). L'écran et les API (`/api/carnet`, `/api/factures`, `/api/verifier`) sont le même service Next.js.
 
-1. Créez le dépôt GitHub depuis Cursor (pilule **Create repo**), ou poussez cette branche vers un dépôt vide, par exemple `bienvenuessegnon/deuxieme-regard`.
-2. Render : ouvrez `https://dashboard.render.com/blueprint/new?repo=` suivi de l'adresse HTTPS du dépôt, puis appliquez le fichier `render.yaml`. Le service écoute `0.0.0.0` et le port fourni par la plateforme. Le plan gratuit s'endort après un quart d'heure sans visite : le premier chargement du jury peut prendre une minute.
-3. Vercel : importez le même dépôt, framework Next.js, sans variable d'environnement. Désactivez la protection d'authentification du déploiement si le jury doit ouvrir l'adresse sans compte Vercel.
+Render lit `render.yaml` : le service web `bwai-insight` et la base `bwai-insight-db`, à Francfort. `DATABASE_URL` vient de cette base au moment du déploiement. Elle n'est pas dans le dépôt. Le plan gratuit s'endort après un quart d'heure sans visite : le premier chargement peut prendre une minute. La base gratuite expire au bout de trente jours.
+
+Vercel : [importer le dépôt](https://vercel.com/new/import?s=https://github.com/bienvenuessegnon/bwai-insight&teamSlug=bienvenus-projects-7051ddc6), framework Next.js. Désactivez la protection d'authentification si le jury doit ouvrir l'adresse sans compte Vercel.
 
 ## Licences
 

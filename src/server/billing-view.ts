@@ -49,7 +49,7 @@ function sheetOf(state: BillingState): Sheet | null {
 
 export async function presentBilling(state: BillingState, origin: string): Promise<BillingView> {
   const issued = await Promise.all(
-    [...state.issued].reverse().map(async (item) => {
+    [...state.issued].reverse().slice(0, 12).map(async (item) => {
       const url = `${origin}/verifier?sceau=${encodeURIComponent(item.sceau)}`;
       return {
         id: item.id,

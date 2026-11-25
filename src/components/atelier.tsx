@@ -84,7 +84,7 @@ export function Atelier() {
     const response = await fetch("/api/factures/pdf", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ document }),
+      body: JSON.stringify({ sceau: document.sceau }),
     });
     if (!response.ok) {
       setError("Le PDF n'a pas pu être scellé.");
