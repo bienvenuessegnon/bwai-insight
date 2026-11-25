@@ -27,13 +27,15 @@ npm start
 
 Date de référence figée : **24 novembre 2026**. Les mêmes pièces redonnent les mêmes soldes.
 
-1. **Lire les messages**, puis **Préparer les relances**. Le journal écrit chaque envoi, chaque annulation et chaque revue.
-2. **Rejouer la préparation**. Une clé d'idempotence empêche un second envoi du même palier.
-3. **Couper la liaison**, préparer, puis **Reprendre la file**. La file reste dans le navigateur. Au retour, chaque brouillon est recalculé.
-4. **Jouer le piège : paiement pendant la file** (facture FAC-2026-1155, peinture de la cantine). La relance est mise en attente, le solde est encaissé, la reprise annule l'envoi.
-5. Puces de scénario : déjà payée (FAC-2026-1042), gros montant (FAC-2026-1120), litige (FAC-2026-1122), piège paiement (FAC-2026-1155).
+1. **Lire les réponses**, puis **Préparer les relances**. Le journal écrit chaque envoi, chaque annulation et chaque validation.
+2. **Préparer les relances** une seconde fois. La même étape ne part pas deux fois.
+3. Dans **Réglages**, **Travailler sans réseau**, préparer, puis **Reprendre la file locale**. Au retour, chaque solde est relu.
+4. **Simuler un paiement arrivé pendant la coupure** (facture FAC-2026-1155, peinture de la cantine). La relance est mise en attente, le solde est encaissé, la reprise annule l'envoi.
+5. Ouvrir une facture depuis le tableau : déjà payée (FAC-2026-1042), gros montant (FAC-2026-1120), litige (FAC-2026-1122).
 
-Le carnet est enregistré dans le navigateur (`localStorage`, clé `deuxieme-regard-v1`). **Réinitialiser le portefeuille** retrouve le jeu de départ. Fermer l'onglet et le rouvrir reprend le journal là où il s'est arrêté.
+Le bouton **Revenir au portefeuille de démonstration**, dans Réglages, retrouve le jeu de départ.
+
+Le même dépôt alimente l'écran et le calcul. L'écran demande chaque solde, chaque statut et chaque relance à `POST /api/carnet`. Le navigateur conserve le carnet (`localStorage`, clé `deuxieme-regard-v1`) pour reprendre après un rechargement, puis le serveur recalcule. Rien n'est envoyé pour de vrai.
 
 ## Réglages
 

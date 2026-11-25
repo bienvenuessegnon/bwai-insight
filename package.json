@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "node scripts/start.mjs start",
     "lint": "eslint",
-    "test": "tsx --test src/domain/engine.test.ts",
+    "test": "tsx --test src/domain/engine.test.ts src/server/carnet.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -22,7 +22,7 @@ Si le réseau tombe, elle coupe la liaison. La file reste dans l'appareil. Au re
 
 ## 3. Architecture
 
-Tout tient dans le navigateur. Le moteur est du TypeScript pur, sous `src/domain`, testé sans l'écran.
+L'écran ne calcule pas. Il envoie le carnet à `POST /api/carnet`, et le serveur répond avec les soldes, la file et le journal. Le moteur reste du TypeScript pur, sous `src/domain`, testé sans l'écran. Le navigateur ne garde le carnet que pour le retrouver après un rechargement.
 
 ```
 Portefeuille brut
